@@ -1,2 +1,6 @@
 /target/
 /confFile.txt
+
+*.iml
+*.ipr
+.jqwik-database
