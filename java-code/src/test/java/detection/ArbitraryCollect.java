@@ -5,7 +5,8 @@ import java.util.function.*;
 
 import net.jqwik.api.*;
 
-// TODO: This must become part of jqwik (and shrinking must be implemented)
+// TODO: No more needed in jqwik >= 1.1.4-SNAPSHOT
+// use Arbitrary.collect(until) instead
 public class ArbitraryCollect<T> implements Arbitrary<List<T>> {
 	private final Arbitrary<T> elementArbitrary;
 	private final Predicate<List<T>> until;
