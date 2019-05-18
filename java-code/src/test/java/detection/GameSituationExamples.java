@@ -59,16 +59,21 @@ class GameSituationExamples {
 	@Provide
 	Arbitrary<List<RelativePosition>> goalSituations() {
 
-		Arbitrary<Long> sampleFrequencyMillis = Arbitraries.longs().between(10L, 100L);
+		// TODO: Turn sampleFrequency arbitrary around in order to shrink towards the max value
+		Arbitrary<Long> sampleBaseFrequencyMillis = Arbitraries.longs().between(10L, 100L);
 		Arbitrary<Long> startingTimestamp = longs().between(0, Long.MAX_VALUE / 2);
 
-		return sampleFrequencyMillis.flatMap(
-				frequency -> gameSequence()
-									 .withSamplingFrequency(Arbitraries.longs().between(frequency - 2, frequency + 2))
-									 .addSequence(kickoffPosition().forDuration(Tuple.of(SECONDS, 1L)))
-									 .addSequence(frontOfLeftGoalPosition()) // Default duration = 1 sec
-									 .addSequence(offTablePosition().forDuration(Tuple.of(SECONDS, 2L)))
-									 .build(startingTimestamp)
+		return sampleBaseFrequencyMillis.flatMap(
+				baseFrequency -> {
+					// TODO: Reformulate to shrink towards baseFrequency
+					LongArbitrary samplingFrequency = longs().between(baseFrequency - 2, baseFrequency + 2);
+					return gameSequence()
+								   .withSamplingFrequency(samplingFrequency)
+								   .addSequence(kickoffPosition().forDuration(Tuple.of(SECONDS, 1L)))
+								   .addSequence(frontOfLeftGoalPosition()) // Default duration = 1 sec
+								   .addSequence(offTablePosition().forDuration(Tuple.of(SECONDS, 2L)))
+								   .build(startingTimestamp);
+				}
 		);
 
 	}
