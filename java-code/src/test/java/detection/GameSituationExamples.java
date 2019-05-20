@@ -79,7 +79,10 @@ class GameSituationExamples {
 	}
 
 	private PositionSequenceBuilder kickoffPosition() {
-		return position(middleLine(), wholeTable());
+		Arbitrary<Tuple2<Double, Double>> positionArbitrary = Combinators.combine(middleLine(), wholeTable()).as(Tuple::of);
+		Arbitrary<Function<Long, RelativePosition>> kickoff =
+				positionArbitrary.map(xy -> ts -> RelativePosition.create(ts, xy.get1(), xy.get2()));
+		return new PositionSequenceBuilder(kickoff);
 	}
 
 	private PositionSequenceBuilder frontOfLeftGoalPosition() {
