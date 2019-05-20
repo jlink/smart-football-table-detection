@@ -80,6 +80,8 @@ class GameSituationExamples {
 
 	private PositionSequenceBuilder kickoffPosition() {
 		Arbitrary<Tuple2<Double, Double>> positionArbitrary = Combinators.combine(middleLine(), wholeTable()).as(Tuple::of);
+		// At this point you could do any filtering/mapping/etc with the position  coordinates.
+
 		Arbitrary<Function<Long, RelativePosition>> kickoff =
 				positionArbitrary.map(xy -> ts -> RelativePosition.create(ts, xy.get1(), xy.get2()));
 		return new PositionSequenceBuilder(kickoff);
