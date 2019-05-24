@@ -240,9 +240,7 @@ class GameSituationExamples {
 		}
 
 		static <T> Arbitrary<List<T>> arbitraryCollect(Arbitrary<T> elementArbitrary, Predicate<List<T>> until) {
-			// TODO: Replace with elementArbitrary.collect(until)
-			// Available in jqwik 1.1.4-SNAPSHOT
-			return new ArbitraryCollect<>(elementArbitrary, until);
+			return elementArbitrary.collect(until);
 		}
 
 	}
